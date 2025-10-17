@@ -1,3 +1,4 @@
+/*
 $(function () {
   const content = $('.content-wrapper');
   const cartBtn = $('#my-cart-button');
@@ -69,3 +70,4 @@ $(function () {
     updateCartText();
   });
 });
+*/

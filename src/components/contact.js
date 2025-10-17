@@ -2,7 +2,7 @@
 
 function Contact() {
   return (
-    <div>
+    <div className="contact-wrapper">
       <h1>Contact Us</h1>
       <p>If you have any questions, please reach out to us at <a href="mailto:support@example.com">support@example.com</a>.</p> 
     </div>
