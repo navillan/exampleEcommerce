@@ -82,12 +82,12 @@ body {
   object-fit: cover;
   border-radius: 5px;
 }
-.product-card .desc {
+.product-card .product-description {
   display: block;
   line-height: 1.1em;
 }
 
-.product-card .price {
+.product-card .product-price {
   font-weight: bold;
   margin: 0;
   padding: 0;

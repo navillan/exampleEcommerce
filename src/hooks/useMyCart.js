@@ -1,15 +1,40 @@
+import $ from 'jquery';
 
-
-export function useGetCart() {
-  try { return JSON.parse(localStorage.getItem('cart')) || []; }
-  catch { return []; }
+function getCart() {
+  try {
+    const myCart = localStorage.getItem("cart");
+    return myCart ? JSON.parse(myCart) : [];
+  } catch {
+    return [];
+  }
 }
 
-export function setCart(cart) {
-  localStorage.setItem('cart', JSON.stringify(cart));
+function setCart(cart) {
+  localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-export function updateCartText() {
-  const count = useGetCart().length;
+function updateCartText() {
+  const count = getCart().length;
+  const cartBtn = $("#my-cart-button");
   if (cartBtn.length) cartBtn.text(`Cart (${count})`);
+}
+
+export function useUpdateCart() {
+  return function addToCart(product, quantity = 1) {
+    if (!product) return;
+    const id = product.id;
+    const title = product.title;
+    const price = product.price ?? 0;
+
+    const cart = getCart();
+    const existing = cart.find((item) => item.id === id);
+    if (existing) {
+      existing.quantity = (existing.quantity ?? 0) + quantity;
+    } else {
+      cart.push({ id, title, price, quantity });
+    }
+    setCart(cart);
+    updateCartText();
+    return cart;
+  };
 }

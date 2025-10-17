@@ -1,98 +1,87 @@
-$(function () {
-	const content = $('.content-wrapper');
-	const cartBtn = $('#my-cart-button');
+import { useEffect, useMemo, useState } from 'react';
+import $ from 'jquery';
 
-	function getCart() {
-		try { return JSON.parse(localStorage.getItem('cart')) || []; }
-		catch { return []; }
-	}
-	function setCart(cart) {
-		localStorage.setItem('cart', JSON.stringify(cart));
-	}
-	function updateCartText() {
-		const count = getCart().reduce((sum, i) => sum + (Number(i.qty) || 1), 0);
-		if (cartBtn.length) cartBtn.text(`Cart (${count})`);
-	}
+function MyCart() {
+  const [cart, setCart] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('cart')) || []; }
+    catch { return []; }
+  });
 
-	function renderCart() {
-		const cart = getCart();
-		if (!cart.length) {
-			content.html('<h1>My Cart</h1><p>Your cart is empty.</p>');
-			updateCartText();
-			return;
-		}
-		let total = 0;
-		const list = $('<div class="cart-list"></div>');
-		cart.forEach((item, idx) => {
-			const qty = Number(item.qty) || 1;
-			const price = Number(item.price) || 0;
-			const line = qty * price;
-			total += line;
-			const row = $(
-				'<div class="cart-row">\
-					<span class="title"></span>\
-					<span class="price"></span>\
-					<input class="qty" type="number" min="1" />\
-					<span class="line"></span>\
-					<button class="remove">Remove</button>\
-				</div>'
-			);
-			row.attr('data-index', idx);
-			row.find('.title').text(item.title || `#${item.id}`);
-			row.find('.price').text(`$${price.toFixed(2)}`);
-			row.find('.qty').val(qty);
-			row.find('.line').text(`$${line.toFixed(2)}`);
-			list.append(row);
-		});
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+    const count = cart.reduce((sum, i) => sum + (Number(i.quantity) || 1), 0);
+    const cartBtn = $('#my-cart-button');
+    if (cartBtn.length) cartBtn.text(`Cart (${count})`);
+  }, [cart]);
 
-		const summary = $(`
-			<div class="cart-summary">
-				<strong>Total: $${total.toFixed(2)}</strong>
-				<div style="margin-top:8px">
-					<button class="clear-cart">Clear Cart</button>
-					<button class="checkout">Checkout</button>
-				</div>
-			</div>
-		`);
+  const total = useMemo(() => {
+    return cart.reduce((sum, item) => {
+      const q = Number(item.quantity) || 1;
+      const p = Number(item.price) || 0;
+      return sum + q * p;
+    }, 0);
+  }, [cart]);
 
-		content.html('<h1>My Cart</h1>');
-		content.append(list, summary);
-		updateCartText();
-	}
+	//Burası değişecek!!
+  const updateQuantity = (index, value) => {
+    const quantity = Math.max(1, Number(value) || 1);
+    setCart(prev => {
+      const next = [...prev];
+      if (next[index]) next[index] = { ...next[index], quantity: quantity };
+      return next;
+    });
+  };
 
-	// Expose for manual refresh/debug
-	window.renderCart = renderCart;
+  const removeItem = (index) => {
+    setCart(prev => prev.filter((_, i) => i !== index));
+  };
 
-	// Handlers
-	$(document).on('change', '.cart-row .qty', function () {
-		const idx = Number($(this).closest('.cart-row').data('index'));
-		const val = Math.max(1, Number($(this).val()) || 1);
-		const cart = getCart();
-		if (cart[idx]) {
-			cart[idx].qty = val;
-			setCart(cart);
-			renderCart();
-		}
-	});
+  const clearCart = () => setCart([]);
 
-	$(document).on('click', '.cart-row .remove', function () {
-		const idx = Number($(this).closest('.cart-row').data('index'));
-		const cart = getCart();
-		cart.splice(idx, 1);
-		setCart(cart);
-		renderCart();
-	});
+  if (!cart.length) {
+    return (
+      <div className="content-wrapper">
+        <h1>My Cart</h1>
+        <p>Your cart is empty.</p>
+      </div>
+    );
+  }
 
-	$(document).on('click', '.clear-cart', function () {
-		setCart([]);
-		renderCart();
-	});
+  return (
+    <div className="content-wrapper">
+      <h1>My Cart</h1>
+      <div className="cart-list">
+        {cart.map((item, idx) => {
+          const quantity = Number(item.quantity) || 1;
+          const price = Number(item.price) || 0;
+          const line = quantity * price;
+          return (
+            <div key={item.id ?? idx} className="cart-row">
+              <span className="title">{item.title || `#${item.id}`}</span>
+              <span className="price">${price.toFixed(2)}</span>
+              <input
+                className="quantity"
+                type="number"
+                min={1}
+                value={quantity}
+                onChange={(e) => updateQuantity(idx, e.target.value)}
+              />
+              <span className="line">${line.toFixed(2)}</span>
+              <button className="remove" onClick={() => removeItem(idx)}>Remove</button>
+            </div>
+          );
+        })}
+      </div>
+      <div className="cart-summary">
+        <strong>Total: ${total.toFixed(2)}</strong>
+        <div style={{ marginTop: 8 }}>
+          <button className="clear-cart" onClick={clearCart}>Clear Cart</button>
+          <button className="checkout" onClick={() => alert('Checkout is not implemented in this demo.')}>Checkout</button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-	$(document).on('click', '.checkout', function () {
-		alert('Checkout is not implemented in this demo.');
-	});
-
-	// Initial render
-	renderCart();
-});
+export default MyCart;
 
