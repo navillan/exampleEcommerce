@@ -24,17 +24,29 @@ body {
 }
 
 .nav-bar-wrapper {
+  position: sticky;
+  top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
   margin-bottom: 20px;
+  box-shadow: 0 1px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 8px 0;
 }
 
 .nav-bar-wrapper a {
   text-decoration: none;
   color: mediumslateblue;
   font-weight: bold;
+  padding: 8px 10px;
+}
+
+.nav-bar-wrapper a:hover {
+  background-color: paleturquoise;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .my-cart-button {
@@ -49,9 +61,40 @@ body {
   background-color: paleturquoise;
 }
 
+.home-wrapper {
+  text-align: center;
+  display: block;
+}
+
 .content-wrapper {
   text-align: center;
   display: block;
+}
+
+.categories-navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 50px;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 6px 0;
+}
+
+.categories-navbar button {
+  border: none;
+  border-radius: 6px;
+  background-color: mediumslateblue;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 15px;
+}
+
+.categories-navbar button:hover {
+  background-color: slateblue;
 }
 
 .products-grid {
@@ -64,11 +107,12 @@ body {
   border: 1px solid #ddd;
   border-radius: 5px;
   padding: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 4px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: grid;
   grid-template-rows: auto auto 1fr auto auto;
-  gap: 8px;
+  gap: 4px;
+  pointer-events: none;
 }
 
 .product-card h2 {
@@ -102,6 +146,20 @@ body {
   border-radius: 5px;
   cursor: pointer;
   justify-self: center;
+  pointer-events: all;
+}
+
+.product-card button:hover {
+  background-color: slateblue;
+}
+
+.about-us-wrapper {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .contact-wrapper {

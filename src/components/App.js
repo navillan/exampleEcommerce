@@ -1,5 +1,6 @@
 import Header from "./header.js";
 import Navbar from "./navbar.js";
+import Home from "./home.js";
 import Content from "./content.js";
 import MyCart from "./myCart.js";
 import AboutUs from "./aboutUs.js";
@@ -13,7 +14,7 @@ function App() {
       <Header />
       <Navbar />
       <Routes>
-        <Route path="/" element={<Content />} />
+        <Route path="/" element={<Home />} />
         <Route path="/products" element={<Content />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about-us" element={<AboutUs />} />
