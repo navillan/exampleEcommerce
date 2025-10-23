@@ -171,9 +171,107 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.my-cart-wrapper {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cart-list {
+  display: grid;
+  text-align: right;
+  display: grid;
+  gap: 8px;
+  padding-bottom: 30px;
+}
+
+.cart-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr auto 2fr auto;
+  align-items: center;
+  column-gap: 11px;
+  padding: 10px 0;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+}
+
+.cart-row .title {
+  justify-self: start;
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cart-row .price,
+.cart-row .total-price {
+  justify-self: end;
+}
+
+.cart-row input.quantity {
+  width: 50px;
+  max-width: 110px;
+  box-sizing: border-box;
+}
+
+.cart-row .remove {
+  justify-self: end;
+  padding: 4px 8px;
+  background-color: mediumslateblue;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cart-row .remove:hover {
+  background-color: slateblue;
+}
+
+.cart-summary {
+  margin-top: 20px;
+}
+
+.total-summary {
+  margin: 0;
+  padding: 0;
+}
+
+.cart-actions button {
+  margin: 0 5px;
+  padding: 10px 15px;
+  background-color: mediumslateblue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cart-actions button:hover {
+  background-color: slateblue;
+}
+
 .footer-wrapper {
   text-align: center;
   margin-top: 20px;
   font-size: 0.9rem;
   color: #777;
+}
+
+@media (max-width: 620px) {
+  .cart-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "title title"
+      "price total"
+      "quantity remove";
+    row-gap: 6px;
+  }
+  .cart-row .title { grid-area: title; }
+  .cart-row .price { grid-area: price; justify-self: start; }
+  .cart-row .total-price { grid-area: total; justify-self: end; }
+  .cart-row input.quantity { grid-area: quantity; justify-self: start; }
+  .cart-row .remove { grid-area: remove; justify-self: end; }
 }

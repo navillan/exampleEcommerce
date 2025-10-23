@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+import $ from 'jquery';
 import Header from "./header.js";
 import Navbar from "./navbar.js";
 import Home from "./home.js";
@@ -6,19 +9,30 @@ import MyCart from "./myCart.js";
 import AboutUs from "./aboutUs.js";
 import Contact from "./contact.js";
 import Footer from "./footer.js";
-import { Routes, Route } from "react-router-dom";
 
 function App() {
+  const [cart, setCart] = useState(() => {
+      try { return JSON.parse(localStorage.getItem('cart')) || []; }
+      catch { return []; }
+  });
+
+  useEffect(() => {
+      localStorage.setItem('cart', JSON.stringify(cart));
+      const count = cart.reduce((sum, i) => sum + (Number(i.quantity) || 1), 0);
+      const cartBtn = $('#my-cart-button');
+      if (cartBtn.length) cartBtn.text(`Cart (${count})`);
+  }, [cart]);  
+
   return (
     <div className="main-wrapper">
       <Header />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Content />} />
+        <Route path="/products" element={<Content setCart={setCart} />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/my-cart" element={<MyCart />} />
+        <Route path="/my-cart" element={<MyCart cart={cart} setCart={setCart} />} />
       </Routes>
       <Footer />
     </div>

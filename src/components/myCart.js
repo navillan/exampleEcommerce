@@ -1,18 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
-import $ from 'jquery';
+import { useMemo } from 'react';
 
-function MyCart() {
-  const [cart, setCart] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('cart')) || []; }
-    catch { return []; }
-  });
-
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-    const count = cart.reduce((sum, i) => sum + (Number(i.quantity) || 1), 0);
-    const cartBtn = $('#my-cart-button');
-    if (cartBtn.length) cartBtn.text(`Cart (${count})`);
-  }, [cart]);
+function MyCart({ cart, setCart }) {
 
   const total = useMemo(() => {
     return cart.reduce((sum, item) => {
@@ -36,11 +24,13 @@ function MyCart() {
     setCart(prev => prev.filter((_, i) => i !== index));
   };
 
-  const clearCart = () => setCart([]);
+  const clearCart = () => {
+    setCart([]);
+  };
 
   if (!cart.length) {
     return (
-      <div className="content-wrapper">
+      <div className="my-cart-wrapper">
         <h1>My Cart</h1>
         <p>Your cart is empty.</p>
       </div>
@@ -48,7 +38,7 @@ function MyCart() {
   }
 
   return (
-    <div className="content-wrapper">
+    <div className="my-cart-wrapper">
       <h1>My Cart</h1>
       <div className="cart-list">
         {cart.map((item, idx) => {
@@ -57,7 +47,9 @@ function MyCart() {
           const line = quantity * price;
           return (
             <div key={item.id ?? idx} className="cart-row">
-              <span className="title">{item.title || `#${item.id}`}</span>
+              <span className="title" title={item.title || `#${item.id}`}>
+                {item.title || `#${item.id}`}
+              </span>
               <span className="price">${price.toFixed(2)}</span>
               <input
                 className="quantity"
@@ -66,15 +58,15 @@ function MyCart() {
                 value={quantity}
                 onChange={(e) => updateQuantity(idx, e.target.value)}
               />
-              <span className="line">${line.toFixed(2)}</span>
+              <span className="total-price">{item.price} x {quantity} = ${line.toFixed(2)}</span>
               <button className="remove" onClick={() => removeItem(idx)}>Remove</button>
             </div>
           );
         })}
       </div>
       <div className="cart-summary">
-        <strong>Total: ${total.toFixed(2)}</strong>
-        <div style={{ marginTop: 8 }}>
+        <h3 className="total-summary">Total Price: ${total.toFixed(2)}</h3>
+        <div className="cart-actions" style={{ marginTop: 8 }}>
           <button className="clear-cart" onClick={clearCart}>Clear Cart</button>
           <button className="checkout" onClick={() => alert('Checkout is not implemented in this demo.')}>Checkout</button>
         </div>

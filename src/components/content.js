@@ -1,11 +1,33 @@
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import useGetProducts from '../hooks/useGetProducts.js';
 import { useUpdateCart } from '../hooks/useMyCart.js';
 
-function Content() {
+
+
+function Content({ setCart }) {
   const { productsList, loading, error } = useGetProducts();
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [randomizedProducts, setRandomizedProducts] = useState([]);
   const addToCart = useUpdateCart();
+  
+  const products = useMemo(() => productsList?.products ?? [], [productsList]);
+
+  const categories = useMemo(() => {
+    return [...new Set(products.map(p => p.category))];
+  }, [products]);
+  
+  function shuffled(list) {
+  const arr = [...list];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const shuffledItem = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[shuffledItem]] = [arr[shuffledItem], arr[i]];
+  }
+  return arr;
+  }
+
+  useEffect(() => {
+    setRandomizedProducts(shuffled(products));
+  }, [products]);
 
   if (loading) {
     return (
@@ -22,8 +44,7 @@ function Content() {
       </div>
     );
   }
-
-  const products = productsList?.products || [];
+  
 
   return (
     <div className="content-wrapper">
@@ -31,13 +52,13 @@ function Content() {
       <p>Discover our wide range of products and enjoy great deals.</p>
       <div className="categories-navbar">
         <button
-          key="__all__"
+          key="all"
           className="category-button"
-          onClick={() => setSelectedCategory(null)}
+          onClick={() => { setSelectedCategory(null); setRandomizedProducts(shuffled(products)); }}
         >
           ALL
         </button>
-        {[...new Set(products.map(p => p.category))].map(category => (
+        {categories.map(category => (
           <button
             key={category}
             className="category-button"
@@ -57,19 +78,19 @@ function Content() {
                 <h2 className="product-name">{p.title}</h2>
                 <p className="product-description">{p.description}</p>
                 <p className="product-price">${p.price}</p>
-                <button className="add-to-cart" onClick={() => addToCart(p)}>Add to Cart</button>
+                <button className="add-to-cart" onClick={() => { const updatedCart = addToCart(p); setCart(updatedCart); }}>Add to Cart</button>
               </div>
             ))}
         </div>
       ) : (
         <div className="products-grid">
-          {[...products].sort(() => 0.5 - Math.random()).map((p) => (
+          {randomizedProducts.map((p) => (
             <div key={p.id} className="product-card">
               <img src={p.thumbnail} alt={p.title} />
               <h2 className="product-name">{p.title}</h2>
               <p className="product-description">{p.description}</p>
               <p className="product-price">${p.price}</p>
-              <button className="add-to-cart" onClick={() => addToCart(p)}>Add to Cart</button>
+              <button className="add-to-cart" onClick={() => { const updatedCart = addToCart(p); setCart(updatedCart); }}>Add to Cart</button>
             </div>
           ))}
         </div>
