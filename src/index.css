@@ -69,6 +69,165 @@ body {
 .content-wrapper {
   text-align: center;
   display: block;
+  position: relative;
+}
+
+.discount-prize {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px 18px;
+  background-color: rgba(207, 207, 207, 0.4);
+  backdrop-filter: blur(10px);
+  border: 2px solid slateblue;
+  box-sizing: border-box;
+  border-radius: 20px;
+  height: 480px;
+  width: 420px;
+  z-index: 1000;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  transition: all 0.8s ease;
+}
+
+.spin-header {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: mediumslateblue;
+}
+
+.discount-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  pointer-events: all;
+}
+
+.spin-cycle {
+  width: 320px;
+  height: 320px;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #cfcfcf;
+  border-radius: 50%;
+  border: 5px solid mediumslateblue;
+  position: relative;
+  overflow: hidden;
+  transition: transform 2s ease-out;
+}
+
+.spin-cycle div {
+  height: 50%;
+  width: 140px;
+  position: absolute;
+  clip-path: polygon(100% 0, 50% 100%, 0 0);
+  transform: translateX(-50%);
+  transform-origin: bottom;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: bold;
+  color: transparent;
+  left: 90px;
+}
+
+.spin-arrow {
+  position: absolute;
+  top: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: black;
+  z-index: 1001;
+}
+
+.spin-arrow::before {
+  content: "▼";
+  font-size: 40px;
+}
+
+.discount-spin {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  margin-top: 230px;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background-color: mediumslateblue;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  letter-spacing: 2px;
+  z-index: 2;
+}
+
+.discount-spin:hover {
+  background-color: slateblue;
+}
+
+.spin-cycle .blue {
+  background-color: blue;
+  left: 50%;
+}
+
+.spin-cycle .red {
+  background-color: red;
+  transform: rotate(45deg);
+}
+
+.spin-cycle .green {
+  background-color: green;
+  transform: rotate(90deg);
+}
+
+.spin-cycle .yellow {
+  background-color: yellow;
+  transform: rotate(135deg);
+}
+
+.spin-cycle .pink {
+  background-color: pink;
+  transform: rotate(180deg);
+}
+
+.spin-cycle .orange {
+  background-color: orange;
+  transform: rotate(225deg);
+}
+
+.spin-cycle .purple {
+  background-color: purple;
+  transform: rotate(270deg);
+}
+
+.spin-cycle .brown {
+  background-color: brown;
+  transform: rotate(315deg);
+}
+
+.spin-cycle div::after {
+  content: "%" attr(value);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateY(-30px);
+  color: #fff;
+  font-weight: bold;
+}
+
+.discount-close {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 .categories-navbar {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-import $ from 'jquery';
+import $ from "jquery";
 import Header from "./header.js";
 import Navbar from "./navbar.js";
 import Home from "./home.js";
