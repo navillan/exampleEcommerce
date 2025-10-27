@@ -32,6 +32,11 @@ function MyCart({ cart, setCart }) {
     setCart([]);
   };
 
+  function handleFinishCheckout() {
+    alert('Checkout is not implemented in this demo.');
+    localStorage.removeItem("Discount_Amount");
+  }
+
   if (!cart.length) {
     return (
       <div className="my-cart-wrapper">
@@ -76,7 +81,7 @@ function MyCart({ cart, setCart }) {
         <h3 className="total-summary">Total Price After Discount: ${(total - (total * (localStorage.getItem("Discount_Amount") || 0) / 100)).toFixed(2)}</h3>
         <div className="cart-actions" style={{ marginTop: 8 }}>
           <button className="clear-cart" onClick={clearCart}>Clear Cart</button>
-          <button className="checkout" onClick={() => alert('Checkout is not implemented in this demo.')}>Checkout</button>
+          <button className="checkout" onClick={handleFinishCheckout}>Checkout</button>
         </div>
       </div>
     </div>

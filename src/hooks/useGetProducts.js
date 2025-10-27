@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function useGetProducts() {
-  const [productsList, setProductsList] = useState(null);
+function useGetProducts({ setProductsList }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -19,13 +18,14 @@ function useGetProducts() {
         setError(err);
       } finally {
         setLoading(false);
+        console.log('Finished fetching products');
       }
     }
 
     fetchProducts();
-  }, []);
+  }, [setProductsList]);
 
-  return { productsList, loading, error };
+  return { loading, error };
 }
 
 export default useGetProducts;

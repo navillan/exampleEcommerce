@@ -1,11 +1,9 @@
 import { useState, useMemo, useEffect } from "react";
-import useGetProducts from "../hooks/useGetProducts.js";
 import { useUpdateCart } from "../hooks/useMyCart.js";
 import $ from "jquery";
 
 
-function Content({ setCart, setDiscountValue }) {
-  const { productsList, loading, error } = useGetProducts();
+function Content({ setCart, productsList, setProductsList, error, loading }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [randomizedProducts, setRandomizedProducts] = useState([]);
   const [showPrize, setShowPrize] = useState(false);
@@ -33,7 +31,7 @@ function Content({ setCart, setDiscountValue }) {
   }, [products]);
 
   useEffect(() => {
-    const discountPrize = setTimeout(() => setShowPrize(true), 3000);
+    const discountPrize = setTimeout(() => {localStorage.getItem("Discount_Amount")? setShowPrize(false) : setShowPrize(true)}, 3000);
     return () => clearTimeout(discountPrize);
   }, []);
 

@@ -9,8 +9,11 @@ import MyCart from "./myCart.js";
 import AboutUs from "./aboutUs.js";
 import Contact from "./contact.js";
 import Footer from "./footer.js";
+import useGetProducts from "../hooks/useGetProducts.js";
 
-function App() {
+function App() {  
+  const [productsList, setProductsList] = useState(null);
+  const { loading, error } = useGetProducts({ setProductsList });
   const [discountValue, setDiscountValue] = useState(0);
   const [cart, setCart] = useState(() => {
       try { return JSON.parse(localStorage.getItem('cart')) || []; }
@@ -29,8 +32,8 @@ function App() {
       <Header />
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Content setCart={setCart} setDiscountValue={setDiscountValue} />} />
+        <Route path="/" element={<Home productsList={productsList} />} />
+        <Route path="/products" element={<Content productsList={productsList} setProductsList={setProductsList} error={error} loading={loading} setCart={setCart} setDiscountValue={setDiscountValue} />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/my-cart" element={<MyCart cart={cart} setCart={setCart} discountValue={discountValue} />} />

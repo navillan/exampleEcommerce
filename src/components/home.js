@@ -1,10 +1,11 @@
+import HomeSlider from "./homeSlider.js";
 
-
-function Home() {
+function Home({ productsList }) {
   return (
     <div className="home-wrapper">
       <h1>Welcome to the Home Page</h1>
-      <p>This is the main landing page of the e-commerce site.</p>
+      <HomeSlider productsList={productsList} />
+      <h2>This is the main landing page of the e-commerce site.</h2>
     </div>
   );
 }
