@@ -4,7 +4,7 @@ import { useUpdateCart } from "../hooks/useMyCart.js";
 import $ from "jquery";
 
 
-function Content({ setCart }) {
+function Content({ setCart, setDiscountValue }) {
   const { productsList, loading, error } = useGetProducts();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [randomizedProducts, setRandomizedProducts] = useState([]);
@@ -65,7 +65,7 @@ function Content({ setCart }) {
     }
     
     setTimeout(() => {
-      $(".spin-header").text(`You won %${discountValue} discount!`);
+      $(".spin-header").text(`You won ${discountValue}% discount!`);
       setTimeout(() => setShowPrize(false), 6000);
     }, 2050);
   }

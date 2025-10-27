@@ -11,6 +11,7 @@ import Contact from "./contact.js";
 import Footer from "./footer.js";
 
 function App() {
+  const [discountValue, setDiscountValue] = useState(0);
   const [cart, setCart] = useState(() => {
       try { return JSON.parse(localStorage.getItem('cart')) || []; }
       catch { return []; }
@@ -29,10 +30,10 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Content setCart={setCart} />} />
+        <Route path="/products" element={<Content setCart={setCart} setDiscountValue={setDiscountValue} />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about-us" element={<AboutUs />} />
-        <Route path="/my-cart" element={<MyCart cart={cart} setCart={setCart} />} />
+        <Route path="/my-cart" element={<MyCart cart={cart} setCart={setCart} discountValue={discountValue} />} />
       </Routes>
       <Footer />
     </div>
