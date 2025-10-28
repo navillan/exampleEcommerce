@@ -26,8 +26,29 @@ function HomeSlider({ productsList }) {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
-    autoplay: false,
-    autoplaySpeed: 1000,
+    autoplay: true,
+    autoplaySpeed: 2000,
+
+    responsive: [
+      {
+        breakpoint: 1098,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 580,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
   
   return (

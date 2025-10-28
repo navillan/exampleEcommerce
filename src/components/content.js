@@ -4,6 +4,7 @@ import $ from "jquery";
 
 
 function Content({ setCart, productsList, setProductsList, error, loading }) {
+
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [randomizedProducts, setRandomizedProducts] = useState([]);
   const [showPrize, setShowPrize] = useState(false);
@@ -16,7 +17,13 @@ function Content({ setCart, productsList, setProductsList, error, loading }) {
   const categories = useMemo(() => {
     return [...new Set(products.map(p => p.category))];
   }, [products]);
-  
+
+  function renderStars(rating) {
+    const productRating = Math.round(rating);
+    const finalRating = "★".repeat(productRating) + "☆".repeat(5 - productRating);
+    return finalRating;
+  }
+
   function shuffled(list) {
     const arr = [...list];
     for (let i = arr.length - 1; i > 0; i--) {
@@ -142,6 +149,8 @@ function Content({ setCart, productsList, setProductsList, error, loading }) {
             .filter((p) => p.category === selectedCategory)
             .map((p) => (
               <div key={p.id} className="product-card">
+                <p className="product-rating">{p.rating}</p>
+                <p className="product-stars">{renderStars(p.rating)}</p>
                 <img src={p.thumbnail} alt={p.title} />
                 <h2 className="product-name">{p.title}</h2>
                 <p className="product-description">{p.description}</p>
@@ -154,6 +163,8 @@ function Content({ setCart, productsList, setProductsList, error, loading }) {
         <div className="products-grid">
           {randomizedProducts.map((p) => (
             <div key={p.id} className="product-card">
+              <p className="product-rating">{p.rating}</p>
+              <p className="product-stars">{renderStars(p.rating)}</p>
               <img src={p.thumbnail} alt={p.title} />
               <h2 className="product-name">{p.title}</h2>
               <p className="product-description">{p.description}</p>
