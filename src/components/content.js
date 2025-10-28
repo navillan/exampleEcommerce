@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
-import { useUpdateCart } from "../hooks/useMyCart.js";
+import { useUpdateCart } from "../utils/updateMyCart.js";
 import $ from "jquery";
 
 
