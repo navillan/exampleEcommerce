@@ -1,70 +1,201 @@
-# Getting Started with Create React App
+# Example Ecommerce (React)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Demo ecommerce site built with React and deployed to GitHub Pages. It includes a home/landing page, product listing, cart, and basic informational pages.
 
-## Available Scripts
+- Live: https://navillan.github.io/exampleEcommerce/
+- Stack: React 19, React Router 7, Create React App (react-scripts 5), jQuery (small utility), react-slick/slick-carousel, gh-pages
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Home (landing) page with featured products
+- Products page with a list/grid of items
+- Add to Cart with quantity tracking (persisted in localStorage)
+- Discount support in cart (via `discountValue`)
+- About Us and Contact pages
+- Responsive layout; basic carousel via `react-slick`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Project Structure
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```
+ecommerce-site/
+	public/
+		index.html
+		404.html                # SPA fallback for GitHub Pages deep links
+	src/
+		components/
+			App.js               # Routes and layout (Header, Navbar, Footer)
+			home.js              # Landing page (rendered at '/')
+			content.js           # Products page
+			myCart.js            # Cart page (uses localStorage)
+			aboutUs.js, contact.js, header.js, navbar.js, footer.js
+		hooks/
+			useGetProducts.js    # Fetches and exposes products
+		index.js               # BrowserRouter with basename from PUBLIC_URL
+		index.css
+	package.json             # homepage set to GitHub Pages URL
+```
 
-### `npm test`
+## Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Prerequisites: Node.js 18+ and npm.
 
-### `npm run build`
+Install dependencies:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Run locally (development):
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm start
+```
 
-### `npm run eject`
+Open http://localhost:3000. The Home component renders at `/`.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Routing and Deployment (GitHub Pages)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This app uses `BrowserRouter`. The `basename` is derived from `PUBLIC_URL` (set by Create React App from `package.json` "homepage").
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Development (`npm start`): `PUBLIC_URL` is empty → `basename` becomes `/`.
+- Production (`npm run build`): `PUBLIC_URL` is taken from `homepage` → `basename` becomes `/exampleEcommerce`.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Deep-link refreshes on GitHub Pages are handled by `public/404.html` which redirects to the SPA entry.
 
-## Learn More
+Make sure `package.json` contains:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```json
+{
+	"homepage": "https://navillan.github.io/exampleEcommerce/"
+}
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Build and Deploy
 
-### Code Splitting
+Build optimized production assets:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm run build
+```
 
-### Analyzing the Bundle Size
+Deploy to GitHub Pages (via `gh-pages`):
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm run deploy
+```
 
-### Making a Progressive Web App
+Notes:
+- Ensure the repository is published via GitHub Pages (Settings → Pages → Deploy from `gh-pages` branch).
+- After changing `homepage`, rebuild before deploying.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Environment Variables
 
-### Advanced Configuration
+Using Create React App:
+- `PUBLIC_URL` is automatically set in production from `homepage`.
+- You typically don’t need `.env` files, but you can optionally add:
+	- `.env.development` → `PUBLIC_URL=/`
+	- `.env.production` → `PUBLIC_URL=https://navillan.github.io/exampleEcommerce`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Contributing
 
-### Deployment
+Issues and pull requests are welcome. For larger changes, please open an issue first to discuss what you’d like to change.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## Örnek E‑Ticaret (React)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+React ile geliştirilmiş ve GitHub Pages’e deploy edilen basit bir e‑ticaret demosu. Ana sayfa, ürün listesi, sepet ve bilgi sayfaları içerir.
+
+- Canlı: https://navillan.github.io/exampleEcommerce/
+- Teknolojiler: React 19, React Router 7, Create React App (react-scripts 5), jQuery (küçük yardımcı), react-slick/slick-carousel, gh-pages
+
+### Özellikler
+
+- Ana sayfa (landing) ve öne çıkan ürünler
+- Ürünler sayfası (liste/grid)
+- Sepete ekleme ve adet takibi (localStorage ile kalıcı)
+- Sepette indirim desteği (`discountValue`)
+- Hakkımızda ve İletişim sayfaları
+- Duyarlı (responsive) tasarım; `react-slick` ile basit slider
+
+### Proje Yapısı
+
+```
+public/
+	index.html
+	404.html            # GitHub Pages için SPA yönlendirmesi
+src/
+	components/
+		App.js            # Rotalar ve layout
+		home.js           # Ana sayfa ('/')
+		content.js        # Ürünler sayfası
+		myCart.js         # Sepet sayfası
+		aboutUs.js, contact.js, header.js, navbar.js, footer.js
+	hooks/
+		useGetProducts.js # Ürün verilerini çeker
+	index.js            # PUBLIC_URL'den türetilen basename ile BrowserRouter
+	index.css
+```
+
+### Başlangıç
+
+Gereksinimler: Node.js 18+ ve npm.
+
+Kurulum:
+
+```bash
+npm install
+```
+
+Geliştirme modunda çalıştırma:
+
+```bash
+npm start
+```
+
+Tarayıcıda http://localhost:3000 adresini açın. Ana sayfa `/` rotasında çalışır.
+
+### Yönlendirme ve Yayınlama (GitHub Pages)
+
+Uygulama `BrowserRouter` kullanır. `basename`, `PUBLIC_URL` değerinden türetilir (CRA, `package.json` içindeki `homepage` alanından alır).
+
+- Geliştirme: `PUBLIC_URL` boş → `basename` `/` olur.
+- Canlı (build): `PUBLIC_URL` = `/exampleEcommerce` yolu → canlıda doğru çalışır.
+
+GitHub Pages’te sayfayı yenilerken 404 sorunu yaşamamak için `public/404.html` dosyası yönlendirme yapar.
+
+`package.json` içinde aşağıdaki satır olduğundan emin olun:
+
+```json
+{
+	"homepage": "https://navillan.github.io/exampleEcommerce/"
+}
+```
+
+### Build ve Deploy
+
+Prod build almak:
+
+```bash
+npm run build
+```
+
+GitHub Pages’e deploy etmek:
+
+```bash
+npm run deploy
+```
+
+Notlar:
+- GitHub üzerinde repo ayarlarından Pages → `gh-pages` branch seçili olmalı.
+- `homepage` değiştiyse, deploy’dan önce mutlaka yeniden build alın.
+
+### Ortam Değişkenleri
+
+Create React App kullanıldığı için:
+- Prod’da `PUBLIC_URL`, `homepage` alanından otomatik gelir.
+- İsteğe bağlı olarak `.env.development` ve `.env.production` dosyaları ekleyebilirsiniz.
+
+---
+
+Ek: Bu projede sepet sayacı gibi küçük DOM güncellemeleri için `jQuery` yer yer kullanılmaktadır. Uzun vadede bunları React state yönetimine taşımak önerilir.

@@ -34,6 +34,7 @@ function MyCart({ cart, setCart }) {
 
   function handleFinishCheckout() {
     alert('Checkout is not implemented in this demo.');
+    clearCart();
     localStorage.removeItem("Discount_Amount");
   }
 

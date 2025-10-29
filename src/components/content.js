@@ -71,7 +71,7 @@ function Content({ setCart, productsList, setProductsList, error, loading }) {
     
     setTimeout(() => {
       $(".spin-header").text(`You won ${discountValue}% discount!`);
-      setTimeout(() => setShowPrize(false), 6000);
+      setTimeout(() => setShowPrize(false), 4000);
     }, 2050);
   }
 
@@ -119,7 +119,7 @@ function Content({ setCart, productsList, setProductsList, error, loading }) {
             <div className="purple" value="35">%35</div>
             <div className="brown" value="5">%5</div>
           </div>
-          <button className="discount-spin" onClick={handleSpinAnimation}>SPIN</button>
+          <button className="discount-spin-button" onClick={handleSpinAnimation}>SPIN</button>
         </div>
       </div>
       )}

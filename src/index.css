@@ -135,8 +135,8 @@ body {
   border: 2px solid slateblue;
   box-sizing: border-box;
   border-radius: 20px;
-  height: 480px;
-  width: 420px;
+  height: 460px;
+  width: 400px;
   z-index: 1000;
   box-shadow: 0 6px 20px rgba(0,0,0,0.15);
   transition: all 0.8s ease;
@@ -145,9 +145,9 @@ body {
 .spin-header {
   font-size: 20px;
   font-weight: bold;
+  margin-top: 5px;
   margin-bottom: 15px;
   color: mediumslateblue;
-  transform: translateX(4%);
 }
 
 .discount-backdrop {
@@ -190,7 +190,7 @@ body {
 
 .spin-arrow {
   position: absolute;
-  top: 14%;
+  top: 10%;
   left: 50%;
   transform: translateX(-50%);
   color: black;
@@ -202,11 +202,11 @@ body {
   font-size: 40px;
 }
 
-.discount-spin {
+.discount-spin-button {
   position: absolute;
   top: 42%;
   left: 50%;
-  margin-top: 230px;
+  margin-top: 220px;
   transform: translateX(-50%);
   padding: 10px 20px;
   background-color: mediumslateblue;
@@ -219,7 +219,7 @@ body {
   z-index: 2;
 }
 
-.discount-spin:hover {
+.discount-spin-button:hover {
   background-color: slateblue;
 }
 
@@ -589,14 +589,10 @@ body {
     top: 88px;
   }
   .discount-prize {
-    width: 90%;
-    height: 470px;
+    width: 340px;
   }
   .spin-header {
     font-size: 18px;
     width: 310px;
-  }
-  .spin-arrow {
-    top: 12%;
   }
 }
