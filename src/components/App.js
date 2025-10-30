@@ -41,7 +41,7 @@ function App() {
   return (
     <div className="main-wrapper">
       <Header />
-      <Navbar activeTab={activeTab} />
+      <Navbar activeTab={activeTab}/>
       <Routes>
         <Route path="/" element={<Home productsList={productsList} />} />
         <Route path="/products" element={<Content productsList={productsList} setProductsList={setProductsList} error={error} loading={loading} cart={cart} setCart={setCart} setDiscountValue={setDiscountValue} />} />

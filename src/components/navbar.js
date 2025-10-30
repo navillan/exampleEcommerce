@@ -8,7 +8,7 @@ function Navbar({ activeTab }) {
       <Link to="/products" className={"products-link"} style={activeTab === "products-link" ? activeStyle : {}}>Products</Link>
       <Link to="/about-us" className={"about-us-link"} style={activeTab === "about-us-link" ? activeStyle : {}}>About Us</Link>
       <Link to="/contact" className={"contact-link"} style={activeTab === "contact-link" ? activeStyle : {}}>Contact</Link>
-      <Link to="/my-cart" className={"my-cart-link"} style={activeTab === "my-cart-link" ? activeStyle : {}}>Cart (0)</Link>
+      <Link to="/my-cart" id="my-cart-button" className={"my-cart-link"} style={activeTab === "my-cart-link" ? activeStyle : {}}>Cart (0)</Link>
     </div>
   );
 }

@@ -3,8 +3,12 @@ import $ from 'jquery';
 
 function MyCart({ cart, setCart }) {
   useEffect(() => {
-    const discountAmount = localStorage.getItem("Discount_Amount") || '0';
-    $(".discount-description").text(`Discount Prize: ${discountAmount}%`);
+    const storedDiscount = localStorage.getItem("Discount_Amount");
+    if (storedDiscount) {
+      $(".discount-description").text(`Discount Prize: ${storedDiscount}%`);
+    } else {
+      $(".discount-description").text("");
+    }
   }, []);
 
   const total = useMemo(() => {
@@ -79,7 +83,7 @@ function MyCart({ cart, setCart }) {
           <p className="discount-description"></p>
         </div>
         <h3 className="total-summary">Total Price: ${total.toFixed(2)}</h3>
-        <h3 className="total-summary">Total Price After Discount: ${(total - (total * (localStorage.getItem("Discount_Amount") || 0) / 100)).toFixed(2)}</h3>
+        {localStorage.getItem("Discount_Amount") ? <h3 className="total-summary">Total Price After Discount: ${(total - (total * (localStorage.getItem("Discount_Amount") || 0) / 100)).toFixed(2)}</h3> : null}
         <div className="cart-actions" style={{ marginTop: 8 }}>
           <button className="clear-cart" onClick={clearCart}>Clear Cart</button>
           <button className="checkout" onClick={handleFinishCheckout}>Checkout</button>

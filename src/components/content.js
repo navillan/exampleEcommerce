@@ -168,7 +168,7 @@ function Content({ cart, setCart, productsList, error, loading }) {
                 <p className="product-price">${p.price}</p>
                 <div className="product-card-expansion">
                   <button className="add-to-cart" onClick={() => { const updatedCart = addToCart(p); setCart(updatedCart); }}>Add to Cart</button>
-                  {(() => { const itemQuantity = cart?.find(item => item.id === p.id)?.quantity || 0; return itemQuantity > 0 ? (<p className="product-cart-quantity">🛒x{itemQuantity}</p>) : null; })()}
+                  {JSON.parse(localStorage.getItem("cart"))?.find(item => item.id === p.id)?.quantity ? <p className="product-cart-quantity">🛒x{JSON.parse(localStorage.getItem("cart")).find(item => item.id === p.id).quantity}</p> : null}
                 </div>
               </div>
             ))}
@@ -185,7 +185,7 @@ function Content({ cart, setCart, productsList, error, loading }) {
               <p className="product-price">${p.price}</p>
               <div className="product-card-expansion">
                 <button className="add-to-cart" onClick={() => { const updatedCart = addToCart(p); setCart(updatedCart); }}>Add to Cart</button>
-                {(() => { const itemQuantity = cart?.find(item => item.id === p.id)?.quantity || 0; return itemQuantity > 0 ? (<p className="product-cart-quantity">🛒x{itemQuantity}</p>) : null; })()}
+                {JSON.parse(localStorage.getItem("cart"))?.find(item => item.id === p.id)?.quantity ? <p className="product-cart-quantity">🛒x{JSON.parse(localStorage.getItem("cart")).find(item => item.id === p.id).quantity}</p> : null}
               </div>
             </div>
           ))}
