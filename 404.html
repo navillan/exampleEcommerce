@@ -7,9 +7,10 @@
     <script>
       (function(location) {
         const path = location.pathname;
+        console.log(path);
         if (path && path !== '/' && !path.endsWith('index.html')) {
           const redirect = 'https://navillan.github.io/p' + path;
-          location.href = redirect;
+          window.location.replace(redirect);
         }
       })(window.location);
     </script>
