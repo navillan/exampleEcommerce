@@ -18,7 +18,6 @@ function useGetProducts({ setProductsList }) {
         setError(err);
       } finally {
         setLoading(false);
-        console.log('Finished fetching products');
       }
     }
 

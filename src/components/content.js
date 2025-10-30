@@ -1,11 +1,13 @@
 import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useUpdateCart } from "../utils/updateMyCart.js";
 import $ from "jquery";
 
 
-function Content({ setCart, productsList, setProductsList, error, loading }) {
+function Content({ cart, setCart, productsList, error, loading }) {
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(() => searchParams.get("category") || null);
   const [randomizedProducts, setRandomizedProducts] = useState([]);
   const [showPrize, setShowPrize] = useState(false);
   const [showCloseDiscount, setShowCloseDiscount] = useState(false);
@@ -36,6 +38,15 @@ function Content({ setCart, productsList, setProductsList, error, loading }) {
   useEffect(() => {
     setRandomizedProducts(shuffled(products));
   }, [products]);
+
+  // Keep selectedCategory in sync with the URL ?category=...
+  useEffect(() => {
+    const urlCategory = searchParams.get("category") || null;
+    setSelectedCategory(urlCategory);
+    if (!urlCategory) {
+      setRandomizedProducts(shuffled(products));
+    }
+  }, [searchParams, products]);
 
   useEffect(() => {
     const discountPrize = setTimeout(() => {localStorage.getItem("Discount_Amount")? setShowPrize(false) : setShowPrize(true)}, 3000);
@@ -129,7 +140,7 @@ function Content({ setCart, productsList, setProductsList, error, loading }) {
         <button
           key="all"
           className="category-button"
-          onClick={() => { setSelectedCategory(null); setRandomizedProducts(shuffled(products)); }}
+          onClick={() => { setSelectedCategory(null); setRandomizedProducts(shuffled(products)); setSearchParams({}); }}
         >
           ALL
         </button>
@@ -137,7 +148,7 @@ function Content({ setCart, productsList, setProductsList, error, loading }) {
           <button
             key={category}
             className="category-button"
-            onClick={() => setSelectedCategory(category)}
+            onClick={() => { setSelectedCategory(category); setSearchParams({ category }); }}
           >
             {category.toUpperCase()}
           </button>
@@ -155,7 +166,10 @@ function Content({ setCart, productsList, setProductsList, error, loading }) {
                 <h2 className="product-name">{p.title}</h2>
                 <p className="product-description">{p.description}</p>
                 <p className="product-price">${p.price}</p>
-                <button className="add-to-cart" onClick={() => { const updatedCart = addToCart(p); setCart(updatedCart); }}>Add to Cart</button>
+                <div className="product-card-expansion">
+                  <button className="add-to-cart" onClick={() => { const updatedCart = addToCart(p); setCart(updatedCart); }}>Add to Cart</button>
+                  {(() => { const itemQuantity = cart?.find(item => item.id === p.id)?.quantity || 0; return itemQuantity > 0 ? (<p className="product-cart-quantity">🛒x{itemQuantity}</p>) : null; })()}
+                </div>
               </div>
             ))}
         </div>
@@ -169,7 +183,10 @@ function Content({ setCart, productsList, setProductsList, error, loading }) {
               <h2 className="product-name">{p.title}</h2>
               <p className="product-description">{p.description}</p>
               <p className="product-price">${p.price}</p>
-              <button className="add-to-cart" onClick={() => { const updatedCart = addToCart(p); setCart(updatedCart); }}>Add to Cart</button>
+              <div className="product-card-expansion">
+                <button className="add-to-cart" onClick={() => { const updatedCart = addToCart(p); setCart(updatedCart); }}>Add to Cart</button>
+                {(() => { const itemQuantity = cart?.find(item => item.id === p.id)?.quantity || 0; return itemQuantity > 0 ? (<p className="product-cart-quantity">🛒x{itemQuantity}</p>) : null; })()}
+              </div>
             </div>
           ))}
         </div>
