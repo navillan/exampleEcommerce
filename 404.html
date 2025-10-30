@@ -8,7 +8,7 @@
       (function(location) {
         const path = location.pathname;
         if (path && path !== '/' && !path.endsWith('index.html')) {
-          const redirect = 'https://navillan.github.io/exampleEcommerce/?p=' + encodeURIComponent(path + location.search + location.hash);
+          const redirect = 'https://navillan.github.io/' + path;
           location.replace(redirect);
         }
       })(window.location);
