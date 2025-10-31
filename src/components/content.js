@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useUpdateCart } from "../utils/updateMyCart.js";
 import $ from "jquery";
@@ -6,13 +6,15 @@ import $ from "jquery";
 
 function Content({ cart, setCart, productsList, error, loading }) {
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const [filterPrice, setFilterPrice] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(() => searchParams.get("category") || null);
   const [randomizedProducts, setRandomizedProducts] = useState([]);
   const [showPrize, setShowPrize] = useState(false);
   const [showCloseDiscount, setShowCloseDiscount] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const addToCart = useUpdateCart();
-  let wheelAngle = 0;  
+  // Persist wheel angle across renders
+  const wheelAngleRef = useRef(0);
 
   const products = useMemo(() => productsList?.products ?? [], [productsList]);
 
@@ -33,6 +35,26 @@ function Content({ cart, setCart, productsList, error, loading }) {
       [arr[i], arr[shuffledItem]] = [arr[shuffledItem], arr[i]];
     }
     return arr;
+  }
+
+  function productCardRender(p) {
+    return (
+      <div key={p.id} className="product-card">
+        <p className="product-rating">{p.rating}</p>
+        <p className="product-stars">{renderStars(p.rating)}</p>
+        <img src={p.thumbnail} alt={p.title} />
+        <h2 className="product-name">{p.title}</h2>
+        <p className="product-description">{p.description}</p>
+        <p className="product-price">${p.price}</p>
+        <div className="product-card-expansion">
+          <button className="add-to-cart" onClick={() => { const updatedCart = addToCart(p); setCart(updatedCart); }}>Add to Cart</button>
+          {(() => {
+            const qty = cart?.find(item => item.id === p.id)?.quantity;
+            return qty ? <p className="product-cart-quantity">🛒x{qty}</p> : null;
+          })()}
+        </div>
+      </div>
+    )
   }
 
   useEffect(() => {
@@ -65,10 +87,10 @@ function Content({ cart, setCart, productsList, error, loading }) {
   function handleSpinAnimation() {
     const cycle = $(".spin-cycle");
     const step = Math.ceil(Math.random() * 8) * 45;
-    wheelAngle += 720 + step;
-    cycle.css("transform", `translate(-50%, -50%) rotate(${wheelAngle}deg)`);
+    wheelAngleRef.current += 720 + step;
+    cycle.css("transform", `translate(-50%, -50%) rotate(${wheelAngleRef.current}deg)`);
     
-    const A = ((wheelAngle % 360) + 360) % 360;
+    const A = ((wheelAngleRef.current % 360) + 360) % 360;
     const nth = ((8 - ((A / 45) % 8)) % 8) + 1;
     const slices = cycle.find("> div");
     const discountValue = slices.eq(nth - 1).attr("value");
@@ -81,6 +103,26 @@ function Content({ cart, setCart, productsList, error, loading }) {
       setTimeout(() => setShowPrize(false), 4000);
     }, 2050);
   }
+
+  // Derived products based on category, search and price filter
+  const displayedProducts = useMemo(() => {
+    const base = selectedCategory
+      ? products.filter((p) => p.category === selectedCategory)
+      : [...randomizedProducts];
+
+    const q = (searchQuery || "").toLowerCase().replace(/\s+/g, "");
+    const bySearch = q
+      ? base.filter((p) => (p.title || "").toLowerCase().replace(/\s+/g, "").includes(q))
+      : base;
+
+    if (filterPrice === "low") {
+      return [...bySearch].sort((a, b) => a.price - b.price);
+    }
+    if (filterPrice === "high") {
+      return [...bySearch].sort((a, b) => b.price - a.price);
+    }
+    return bySearch;
+  }, [selectedCategory, randomizedProducts, products, filterPrice, searchQuery]);
 
 
 
@@ -147,46 +189,25 @@ function Content({ cart, setCart, productsList, error, loading }) {
             onClick={() => { setSelectedCategory(category); setSearchParams({ category }); }}
           >
             {category.toUpperCase()}
-          </button>
+          </button>          
         ))}
+        <select id="price-filter" className="price-filter-selector" value={filterPrice} onChange={(e) => setFilterPrice(e.target.value)}>
+          <option value="">Select Price Filter</option>
+          <option value="low">Low to High</option>
+          <option value="high">High to Low</option>
+        </select>
       </div>
-      {selectedCategory ? (
-        <div className="products-grid">
-          {products
-            .filter((p) => p.category === selectedCategory)
-            .map((p) => (
-              <div key={p.id} className="product-card">
-                <p className="product-rating">{p.rating}</p>
-                <p className="product-stars">{renderStars(p.rating)}</p>
-                <img src={p.thumbnail} alt={p.title} />
-                <h2 className="product-name">{p.title}</h2>
-                <p className="product-description">{p.description}</p>
-                <p className="product-price">${p.price}</p>
-                <div className="product-card-expansion">
-                  <button className="add-to-cart" onClick={() => { const updatedCart = addToCart(p); setCart(updatedCart); }}>Add to Cart</button>
-                  {JSON.parse(localStorage.getItem("cart"))?.find(item => item.id === p.id)?.quantity ? <p className="product-cart-quantity">🛒x{JSON.parse(localStorage.getItem("cart")).find(item => item.id === p.id).quantity}</p> : null}
-                </div>
-              </div>
-            ))}
-        </div>
-      ) : (
-        <div className="products-grid">
-          {randomizedProducts.map((p) => (
-            <div key={p.id} className="product-card">
-              <p className="product-rating">{p.rating}</p>
-              <p className="product-stars">{renderStars(p.rating)}</p>
-              <img src={p.thumbnail} alt={p.title} />
-              <h2 className="product-name">{p.title}</h2>
-              <p className="product-description">{p.description}</p>
-              <p className="product-price">${p.price}</p>
-              <div className="product-card-expansion">
-                <button className="add-to-cart" onClick={() => { const updatedCart = addToCart(p); setCart(updatedCart); }}>Add to Cart</button>
-                {JSON.parse(localStorage.getItem("cart"))?.find(item => item.id === p.id)?.quantity ? <p className="product-cart-quantity">🛒x{JSON.parse(localStorage.getItem("cart")).find(item => item.id === p.id).quantity}</p> : null}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="search-bar-wrapper">
+        <input
+        placeholder="What You Are Looking For?"
+          className="search-bar"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+      <div className="products-grid">
+        {displayedProducts.map((p) => productCardRender(p))}
+      </div>
     </div>
   );
 }

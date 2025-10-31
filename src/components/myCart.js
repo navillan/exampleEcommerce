@@ -41,6 +41,7 @@ function MyCart({ cart, setCart }) {
     clearCart();
     localStorage.removeItem("Discount_Amount");
   }
+  const totalPriceValue = (total - (total * (localStorage.getItem("Discount_Amount") || 0) / 100)).toFixed(2);
 
   if (!cart.length) {
     return (
@@ -82,8 +83,8 @@ function MyCart({ cart, setCart }) {
         <div className="discount-wrapper">
           <p className="discount-description"></p>
         </div>
-        <h3 className="total-summary">Total Price: ${total.toFixed(2)}</h3>
-        {localStorage.getItem("Discount_Amount") ? <h3 className="total-summary">Total Price After Discount: ${(total - (total * (localStorage.getItem("Discount_Amount") || 0) / 100)).toFixed(2)}</h3> : null}
+        <h3 className="total-summary">Total Price: ${new Intl.NumberFormat({style: "decimal"}).format(total.toFixed(2))}</h3>
+        {localStorage.getItem("Discount_Amount") ? <h3 className="total-summary">Total Price After Discount: ${new Intl.NumberFormat({style: "decimal"}).format(totalPriceValue)}</h3> : null}
         <div className="cart-actions" style={{ marginTop: 8 }}>
           <button className="clear-cart" onClick={clearCart}>Clear Cart</button>
           <button className="checkout" onClick={handleFinishCheckout}>Checkout</button>
