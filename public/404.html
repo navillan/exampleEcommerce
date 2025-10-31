@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <title>Page Not Found</title>
-    <meta http-equiv="refresh" content="0; URL=%PUBLIC_URL%/" />
+  <meta http-equiv="refresh" content="1; URL=https://navillan.github.io/exampleEcommerce/" />
     <script>
       (function(location) {
         const path = location.pathname;
         if (path && path !== '/' && !path.endsWith('index.html')) {
-          const redirect = '%PUBLIC_URL%/?p=' + encodeURIComponent(path + location.search + location.hash);
+          const redirect = 'https://navillan.github.io/exampleEcommerce/?p=' + encodeURIComponent(path);
           location.replace(redirect);
         }
       })(window.location);
@@ -16,7 +16,7 @@
   </head>
   <body>
     <noscript>
-      <a href="%PUBLIC_URL%/">Back to home</a>
+      <a href="https://navillan.github.io/exampleEcommerce/">Back to home</a>
     </noscript>
   </body>
 </html>

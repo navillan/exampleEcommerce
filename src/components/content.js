@@ -74,11 +74,7 @@ function Content({ cart, setCart, productsList, error, loading }) {
     const discountValue = slices.eq(nth - 1).attr("value");
   
     const discountAmount = discountValue;
-    try {
       localStorage.setItem("Discount_Amount", discountAmount);
-    } catch {
-      console.error("Failed to store discount amount in localStorage");
-    }
     
     setTimeout(() => {
       $(".spin-header").text(`You won ${discountValue}% discount!`);

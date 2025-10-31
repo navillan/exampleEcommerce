@@ -5,6 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="Ecommerce" content="Example Ecommerce Site">
   <title>Example Ecommerce Site</title>
+  <script>
+    (function() {
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var p = params.get('p');
+        if (p) {
+          var target = decodeURIComponent(p);
+          // Ensure target starts with '/'
+          if (target.charAt(0) !== '/') target = '/' + target;
+
+          // Compute the base path (useful for GitHub Pages project sites like /exampleEcommerce)
+          var currentPath = window.location.pathname; // e.g., /exampleEcommerce/
+          var parts = currentPath.split('/').filter(Boolean); // ["exampleEcommerce"]
+          var base = parts.length ? ('/' + parts[0]) : '';
+
+          // If target already includes the base, use it as-is; otherwise, prefix it
+          var newPath = target.startsWith(base + '/') || target === base ? target
+                        : (base + target);
+
+          // Replace the current URL so the SPA router sees the intended route
+          window.history.replaceState(null, '', newPath);
+        }
+      } catch (e) {
+        // ignore
+      }
+    })();
+  </script>
 </head>
 <body>
   <div id="root"></div>
